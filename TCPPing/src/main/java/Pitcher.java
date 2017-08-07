@@ -52,7 +52,8 @@ public class Pitcher {
 			e.printStackTrace();
 		}
 
-		// Adding message about lost packages when program ends
+		// Adding message about lost packages when program ends and 
+		// sending Cathcer message to stop listning
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 
 			@Override
@@ -63,10 +64,15 @@ public class Pitcher {
 						(1 - ((float) receivedMessages.size() / sentMessages.size())) * 100);
 
 				try {
+					ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+					byteBuffer.putInt(-1);
+					byte[] buffer = byteBuffer.array();
+					outToCatcher.write(buffer);
 					timer.cancel();
 					outToCatcher.close();
 					inFromCatcher.close();
 					clientSocket.close();
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
