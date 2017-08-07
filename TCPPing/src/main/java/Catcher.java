@@ -23,13 +23,13 @@ public class Catcher {
 
 		try {
 			// Opening connection
+			System.out.println("Listening...");
 			ServerSocket serverSocket;
 			serverSocket = new ServerSocket();
 			serverSocket.bind(new InetSocketAddress(bind, port));
 			Socket connectionSocket = serverSocket.accept();
 			DataInputStream inFromPitcher = new DataInputStream(connectionSocket.getInputStream());
 			DataOutputStream outToPitcher = new DataOutputStream(connectionSocket.getOutputStream());
-			System.out.println("Listening...");
 
 			while (true) {
 
