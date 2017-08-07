@@ -46,8 +46,13 @@ public class TCPPing {
 
 			hostname = standAloneParameters.get(0);
 			try {
-				if (parsedResults.hasOption("mps"))
+				if (parsedResults.hasOption("mps")) {
 					mps = Integer.parseInt(parsedResults.getOptionValue("mps"));
+					if(mps < 1) {
+						System.err.println("Parsing failed. Reason: invalid mps. mps > 1");
+						System.exit(1);
+					}
+				}
 				if (parsedResults.hasOption("size")) {
 					size = Integer.parseInt(parsedResults.getOptionValue("size"));
 					if(size < 50 || size > 3000) {
