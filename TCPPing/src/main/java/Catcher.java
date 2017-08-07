@@ -44,6 +44,13 @@ public class Catcher {
 
 				// Receiving data from the message.
 				int size = byteBuffer.getInt();
+				
+				// If -1 received that means that Pitcher has finished and Catcher should stop.
+				if (size == -1) {
+					System.out.println("Finishing...");
+					System.exit(0);
+				}
+				
 				int seqNum = byteBuffer.getInt();
 				long timeSent = byteBuffer.getLong();
 
