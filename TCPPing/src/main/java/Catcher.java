@@ -12,7 +12,6 @@ public class Catcher {
 	public static long timeSentCatcher;
 	private long timeOffset;
 	private final int MAX_BUFFER_SIZE = 3000;
-	
 
 	public Catcher(int port, String bind, long timeOffset) {
 		this.port = port;
@@ -32,31 +31,35 @@ public class Catcher {
 			DataOutputStream outToPitcher = new DataOutputStream(connectionSocket.getOutputStream());
 
 			while (true) {
-				
+
 				// Creating max size buffer because we do not yet know size of the message.
 				byte[] byteArray = new byte[MAX_BUFFER_SIZE];
-				
+
 				// Reading received message into byteArray and wrapping it into ByteBuffer.
 				inFromPitcher.read(byteArray);
 				ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
-				
+
 				// Getting time when message was received.
 				long timeCatcherReceived = new Date().getTime() + timeOffset;
-				
+
 				// Receiving data from the message.
 				int size = byteBuffer.getInt();
 				int seqNum = byteBuffer.getInt();
 				long timeSent = byteBuffer.getLong();
-				
+
 				// Creating new buffer exact the same size as received one.
-				byteBuffer = ByteBuffer.allocate(size);
-				byteBuffer.putInt(seqNum);
-				byteBuffer.putLong(timeSent);
-				byteBuffer.putLong(timeCatcherReceived);
-				byteArray = byteBuffer.array();
-				
-				// Sending response to the Pitcher.
-				outToPitcher.write(byteArray);
+				if (size != 0) {
+					ByteBuffer byteBuffer2 = ByteBuffer.allocate(size);
+					byteBuffer2.putInt(seqNum);
+					byteBuffer2.putLong(timeSent);
+					byteBuffer2.putLong(timeCatcherReceived);
+					byteArray = byteBuffer2.array();
+
+					// Sending response to the Pitcher.
+					outToPitcher.write(byteArray);
+					
+				} else
+					continue;
 
 			}
 		}

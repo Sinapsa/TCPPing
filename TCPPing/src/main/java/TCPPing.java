@@ -48,8 +48,13 @@ public class TCPPing {
 			try {
 				if (parsedResults.hasOption("mps"))
 					mps = Integer.parseInt(parsedResults.getOptionValue("mps"));
-				if (parsedResults.hasOption("size"))
+				if (parsedResults.hasOption("size")) {
 					size = Integer.parseInt(parsedResults.getOptionValue("size"));
+					if(size < 50 || size > 3000) {
+						System.err.println("Parsing failed. Reason: invalid size. size = [50,3000]");
+						System.exit(1);
+					}
+				}
 			} catch (NumberFormatException e) {
 				System.err.println("Parsing failed. Reason: invalid size or mps");
 				System.exit(1);
