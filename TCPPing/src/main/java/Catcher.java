@@ -29,6 +29,7 @@ public class Catcher {
 			Socket connectionSocket = serverSocket.accept();
 			DataInputStream inFromPitcher = new DataInputStream(connectionSocket.getInputStream());
 			DataOutputStream outToPitcher = new DataOutputStream(connectionSocket.getOutputStream());
+			System.out.println("Listening...");
 
 			while (true) {
 
